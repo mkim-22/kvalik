@@ -3,7 +3,7 @@ from ui.login_window_ui import Ui_login_window
 from forms.admin_wind import AdminBookingsWindow
 from forms.client_wind import ClientWind
 from forms.manager_wind import ManagerWind
-from sql.db_sql import get_login, get_reg
+from sql.db_sql import get_login
 import sys
 
 class Login_win(QWidget):
@@ -13,17 +13,13 @@ class Login_win(QWidget):
         self.ui.setupUi(self)
 
         self.ui.login_button.clicked.connect(self.login)
-        self.ui.reg_button.clicked.connect(self.reg)
+        self.ui.reg_button.clicked.connect(self.open_register_window)
 
-    def reg(self):
-        login = self.ui.login_input.text()
-        password = self.ui.password_input.text()
+    def open_register_window(self):
+        from forms.reg_widget import RegisterWindow
+        self.register_window = RegisterWindow()
+        self.register_window.show()
 
-        ok, msg = get_reg(login, password)
-        if ok:
-            QMessageBox.information(self, "Success", msg)
-        else:
-            QMessageBox.warning(self, "Mis", msg)
 
     def login(self):
         login = self.ui.login_input.text()

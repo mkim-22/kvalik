@@ -11,21 +11,42 @@ def get_db():
         cursorclass=pymysql.cursors.DictCursor
     )
 
-def get_reg(login, password):
+def register_new_client(name, surname, lastname, phone, login, password):
+
     db = get_db()
 
     try:
         with db.cursor() as cursor:
+
+            # Проверяем, есть ли логин
             cursor.execute("SELECT id FROM users WHERE login = %s", (login,))
             if cursor.fetchone():
-                return False, 'Логин уже существует'
-            cursor.execute("INSERT INTO users (login, password, role) VALUES(%s, %s,'client')", (login, password))
+                return False, "Такой логин уже существует!"
+
+            # 1. Создаём гостя
+            cursor.execute("""
+                INSERT INTO guests (name, surname, lastname, phone)
+                VALUES (%s, %s, %s, %s)
+            """, (name, surname, lastname, phone))
+
+            guest_id = cursor.lastrowid
+
+            # 2. Создаём пользователя
+            cursor.execute("""
+                INSERT INTO users (login, password, role, guest_id)
+                VALUES (%s, %s, 'client', %s)
+            """, (login, password, guest_id))
+
             db.commit()
-            return True, "Успешно"
+            return True, "Регистрация успешно завершена."
+
     except Exception as e:
-        return False, f'Ошибка{e}'
+        print("DB error:", e)
+        return False, "Ошибка при регистрации."
+
     finally:
         db.close()
+
 
 
 def get_login(login, password):
