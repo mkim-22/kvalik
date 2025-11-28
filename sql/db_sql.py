@@ -8,7 +8,7 @@ def get_db():
         user='root',
         password='root',
         charset='utf8mb4',
-        cursorclass=pymysql.cursor.DictCursor
+        cursorclass=pymysql.cursors.DictCursor
     )
 
 def get_reg(login, password):
