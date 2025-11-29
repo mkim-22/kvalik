@@ -1,8 +1,8 @@
 import sys
 
 from PyQt6.QtGui import QStandardItemModel, QStandardItem
-from PyQt6.QtWidgets import QApplication, QMainWindow, QMenu, QMessageBox
-from forms.edit_booking import EditBookingWindow
+from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox
+from widgets.edit_booking import EditBookingWindow
 from ui.admin_bookings_ui import Ui_Admin_Wind
 from sql.db_sql import get_all_bookings, delete_booking, get_booking_by_id, update_booking, get_bookings_by_date_range, \
     get_guest_by_id, delete_guest, get_all_guests
