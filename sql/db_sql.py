@@ -47,8 +47,6 @@ def register_new_client(name, surname, lastname, phone, login, password):
     finally:
         db.close()
 
-
-
 def get_login(login, password):
     db = get_db()
     try:
@@ -161,5 +159,70 @@ def get_booking_by_id(booking_id):
         with db.cursor() as cursor:
             cursor.execute("SELECT * FROM bookings WHERE id = %s", (booking_id,))
             return cursor.fetchone()
+    finally:
+        db.close()
+
+
+# ===============================================================
+# Получить всех гостей
+# ===============================================================
+def get_all_guests():
+    db = get_db()
+    try:
+        with db.cursor() as cursor:
+            cursor.execute("SELECT * FROM guests")
+            return cursor.fetchall()
+    finally:
+        db.close()
+
+
+def add_guest(name, surname, lastname, phone):
+    db = get_db()
+    try:
+        with db.cursor() as cursor:
+            cursor.execute("""
+                INSERT INTO guests (name, surname, lastname, phone)
+                VALUES (%s, %s, %s, %s)
+            """, (name, surname, lastname, phone))
+            db.commit()
+    finally:
+        db.close()
+
+
+def get_guest_by_id(guest_id):
+    db = get_db()
+    try:
+        with db.cursor() as cursor:
+            cursor.execute("SELECT * FROM guests WHERE id = %s", (guest_id,))
+            return cursor.fetchone()
+    finally:
+        db.close()
+
+
+def update_guest(guest_id, name, surname, lastname, phone):
+    db = get_db()
+    try:
+        with db.cursor() as cursor:
+            cursor.execute("""
+                UPDATE guests
+                SET name = %s,
+                    surname = %s,
+                    lastname = %s,
+                    phone = %s
+                WHERE id = %s
+            """, (name, surname, lastname, phone, guest_id))
+            db.commit()
+    finally:
+        db.close()
+
+
+def delete_guest(guest_id):
+    db = get_db()
+    try:
+        with db.cursor() as cursor:
+            cursor.execute("""
+                DELETE FROM guests WHERE id = %s
+            """, (guest_id,))
+            db.commit()
     finally:
         db.close()

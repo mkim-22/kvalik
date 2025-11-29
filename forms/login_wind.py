@@ -16,7 +16,7 @@ class Login_win(QWidget):
         self.ui.reg_button.clicked.connect(self.open_register_window)
 
     def open_register_window(self):
-        from forms.reg_widget import RegisterWindow
+        from widgets.reg_widget import RegisterWindow
         self.register_window = RegisterWindow()
         self.register_window.show()
 
